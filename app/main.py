@@ -66,7 +66,7 @@ def probability_gauge(pct: float) -> str:
     """Returns an HTML visual gauge bar for churn probability."""
     if pct >= 70:
         color = "#ef4444"   # red
-    elif pct >= 40:
+    elif pct >= 30:
         color = "#f59e0b"   # amber
     else:
         color = "#22c55e"   # green
@@ -138,10 +138,10 @@ def gradio_predict(
     pct        = proba * 100
 
     # Verdict badge
-    if pct >= 70:
+    if pct >= 50:
         badge = "HIGH RISK — WILL CHURN"
         badge_color = "#ef4444"
-    elif pct >= 40:
+    elif pct >= 30:
         badge = "MEDIUM RISK — MONITOR CLOSELY"
         badge_color = "#f59e0b"
     else:

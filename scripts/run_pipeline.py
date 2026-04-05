@@ -238,11 +238,3 @@ if __name__ == "__main__":
     args = p.parse_args()
     main(args)
 
-"""
-# Use this below to run the pipeline:
-
-python scripts/run_pipeline.py \
-    --input data/raw/Telco-Customer-Churn.csv \
-    --target Churn
-
-"""

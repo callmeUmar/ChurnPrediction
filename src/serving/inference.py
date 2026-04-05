@@ -27,7 +27,8 @@ if not os.path.exists(FEATURES_PATH):
     raise RuntimeError(f"Feature columns not found at {FEATURES_PATH}. Run scripts/run_pipeline.py first.")
 
 model        = joblib.load(MODEL_PATH)
-feature_cols = json.load(open(FEATURES_PATH))
+with open(FEATURES_PATH) as f:
+    feature_cols = json.load(f)
 
 print(f"Model loaded from {MODEL_PATH}")
 print(f"Feature columns loaded: {len(feature_cols)} features")
