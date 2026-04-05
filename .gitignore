@@ -19,8 +19,7 @@ data/raw/
 data/processed/
 data/external/
 
-# Trained model artifacts
-artifacts/*.pkl
+# Trained model artifacts (model.pkl is tracked for deployment)
 artifacts/*.joblib
 
 # MLflow
