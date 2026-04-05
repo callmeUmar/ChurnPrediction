@@ -250,4 +250,7 @@ with gr.Blocks(
 
 
 # ── Mount Gradio into FastAPI ─────────────────────────────────────────────────
-app = gr.mount_gradio_app(app, demo, path="/ui")
+try:
+    app = gr.mount_gradio_app(app, demo, path="/ui")
+except Exception as e:
+    print(f"Warning: Gradio UI could not be mounted: {e}")

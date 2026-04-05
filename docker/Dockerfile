@@ -20,12 +20,7 @@ COPY requirements.txt .
 
 # 6. Install all Python dependencies
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir \
-        xgboost \
-        optuna \
-        gradio \
-        joblib \
-        -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt
 
 # 7. Copy the project files
 COPY app/       ./app/
@@ -36,4 +31,4 @@ COPY artifacts/  ./artifacts/
 EXPOSE 8000
 
 # 9. Start the server
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
