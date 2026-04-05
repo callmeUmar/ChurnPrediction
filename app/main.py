@@ -18,7 +18,7 @@ from src.serving.inference import run_inference
 
 # ── FastAPI ───────────────────────────────────────────────────────────────────
 app = FastAPI(
-    title="Telco Churn Predictor",
+    title="Churn Predictor",
     description="XGBoost churn prediction API. UI available at /ui",
     version="1.0.0",
 )
@@ -175,7 +175,7 @@ with gr.Blocks(
 ) as demo:
 
     gr.Markdown("""
-    # 🔮 Telco Customer Churn Predictor
+    # 🔮 Churn Predictor
     Fill in the customer profile across the tabs, then click **Predict**.
     """)
 
