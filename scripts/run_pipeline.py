@@ -144,22 +144,19 @@ def main(args):
         # These hyperparameters were optimized through hyperparameter tuning
         # hyperparameter optimization tools like Optuna
         model = XGBClassifier(
-            # Tree structure parameters
-            n_estimators=301,        # Number of trees (OPTIMIZED)
-            learning_rate=0.034,     # Step size shrinkage (OPTIMIZED)
-            max_depth=7,            # Maximum tree depth (OPTIMIZED)
-
-            # Regularization parameters
-            subsample=0.95,         # Sample ratio of training instances
-            colsample_bytree=0.98,  # Sample ratio of features for each tree
-
-            # Performance parameters
-            n_jobs=-1,              # Use all CPU cores
-            random_state=42,        # Reproducible results
-            eval_metric="logloss",  # Evaluation metric
-
-            # ESSENTIAL: Handle class imbalance
-            scale_pos_weight=scale_pos_weight  # Weight for positive class (churners)
+            n_estimators=500,
+            learning_rate=0.05,
+            max_depth=5,
+            subsample=0.8,
+            colsample_bytree=0.8,
+            min_child_weight=5,
+            gamma=0.1,
+            reg_alpha=0.1,
+            reg_lambda=1.0,
+            n_jobs=-1,
+            random_state=42,
+            eval_metric="logloss",
+            scale_pos_weight=scale_pos_weight
         )
 
         # === Train Model and Track Training Time ===
@@ -229,7 +226,7 @@ if __name__ == "__main__":
     p.add_argument("--input", type=str, required=True,
                    help="path to CSV (e.g., data/raw/Telco-Customer-Churn.csv)")
     p.add_argument("--target", type=str, default="Churn")
-    p.add_argument("--threshold", type=float, default=0.35)
+    p.add_argument("--threshold", type=float, default=0.50)
     p.add_argument("--test_size", type=float, default=0.2)
     p.add_argument("--experiment", type=str, default="Telco Churn")
     p.add_argument("--mlflow_uri", type=str, default=None,

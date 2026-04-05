@@ -98,7 +98,7 @@ def probability_gauge(pct: float) -> str:
         </div>
         <div style="display:flex; justify-content:space-between;
                     font-size:11px; color:#6b7280; margin-top:4px;">
-            <span>0%</span><span>35% threshold</span><span>100%</span>
+            <span>0%</span><span>50% threshold</span><span>100%</span>
         </div>
     </div>
     """

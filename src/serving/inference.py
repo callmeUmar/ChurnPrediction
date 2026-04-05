@@ -41,7 +41,7 @@ def _load_artifacts():
 
 
 # ── Main inference function ───────────────────────────────────────────────────
-def run_inference(data: dict, threshold: float = 0.35) -> dict:
+def run_inference(data: dict, threshold: float = 0.50) -> dict:
     """
     Takes a raw customer dict, runs the full preprocessing + feature
     engineering pipeline, and returns churn prediction + probability.

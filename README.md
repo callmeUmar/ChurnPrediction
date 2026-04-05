@@ -1,4 +1,4 @@
-# 🔮 Telco Customer Churn Prediction
+# 🔮 Churn Predictor
 
 A production-ready end-to-end Machine Learning system that predicts whether a telecom customer is likely to churn. Built with a full MLOps pipeline — from data validation and feature engineering to model training, experiment tracking, REST API serving, and an interactive web UI.
 
