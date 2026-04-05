@@ -24,7 +24,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 # Local modules - Core pipeline components
 from src.data.load_data import load_data                    # Data loading with error handling
 from src.data.preprocess import preprocess_data            # Basic data cleaning
-from src.features.build_features import build_features     # Feature engineering (CRITICAL for model performance)
+from src.features.build_features import build_features     # Feature engineering 
 from src.utils.validate_data import validate_telco_data    # Data quality validation
 
 def main(args):
@@ -132,7 +132,7 @@ def main(args):
         )
         print(f"✅ Train: {X_train.shape[0]} samples | Test: {X_test.shape[0]} samples")
 
-        # === CRITICAL: Handle Class Imbalance ===
+        # === Handle Class Imbalance ===
         # Calculate scale_pos_weight to handle imbalanced dataset
         # This tells XGBoost to give more weight to the minority class (churners)
         scale_pos_weight = (y_train == 0).sum() / (y_train == 1).sum()
@@ -141,8 +141,8 @@ def main(args):
         # === STAGE 5: Model Training with Optimized Hyperparameters ===
         print("🤖 Training XGBoost model...")
 
-        # IMPORTANT: These hyperparameters were optimized through hyperparameter tuning
-        # In production, consider using hyperparameter optimization tools like Optuna
+        # These hyperparameters were optimized through hyperparameter tuning
+        # hyperparameter optimization tools like Optuna
         model = XGBClassifier(
             # Tree structure parameters
             n_estimators=301,        # Number of trees (OPTIMIZED)
@@ -200,13 +200,19 @@ def main(args):
         print(f"   F1 Score: {f1:.3f} | ROC AUC: {roc_auc:.3f}")
 
         # === STAGE 7: Model Serialization and Logging ===
-        print("💾 Saving model to MLflow...")
-        # ESSENTIAL: Log model in MLflow's standard format for serving
+        print("💾 Saving model...")
+
+        # Save locally to artifacts/ for inference.py and the Gradio/FastAPI app
+        os.makedirs(artifacts_dir, exist_ok=True)
+        joblib.dump(model, os.path.join(artifacts_dir, "model.pkl"))
+        print(f"✅ Model saved to {artifacts_dir}/model.pkl")
+
+        # Also log to MLflow for experiment tracking
         mlflow.sklearn.log_model(
             model,
-            artifact_path="model"  # This creates a 'model/' folder in MLflow run artifacts
+            artifact_path="model"
         )
-        print("✅ Model saved to MLflow for serving pipeline")
+        print("✅ Model logged to MLflow")
 
         # === Final Performance Summary ===
         print("\n⏱️  Performance Summary:")

@@ -1,35 +1,39 @@
-# ── Base image ────────────────────────────────────────────────────────────────
-FROM python:3.9-slim
+# 1. Use the official lightweight Python base image
+FROM python:3.11-slim
 
-# Keeps Python from buffering stdout/stderr (important for Docker logs)
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
+# 2. Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONPATH=/app
 
-# ── System dependencies ───────────────────────────────────────────────────────
+# 3. Install system dependencies (required for XGBoost + OpenMP on Linux)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-# ── Working directory ─────────────────────────────────────────────────────────
+# 4. Set the working directory inside the container
 WORKDIR /app
 
-# ── Install Python dependencies ───────────────────────────────────────────────
-# Copy requirements first (Docker layer caching — only reinstalls if requirements change)
+# 5. Copy only requirements first (Docker layer caching)
 COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir \
+
+# 6. Install all Python dependencies
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir \
         xgboost \
         optuna \
         gradio \
+        joblib \
         -r requirements.txt
 
-# ── Copy project files ────────────────────────────────────────────────────────
-COPY app/        ./app/
+# 7. Copy the project files
+COPY app/       ./app/
 COPY src/        ./src/
 COPY artifacts/  ./artifacts/
 
-# ── Expose FastAPI port ───────────────────────────────────────────────────────
+# 8. Expose FastAPI port
 EXPOSE 8000
 
-# ── Start the server ──────────────────────────────────────────────────────────
+# 9. Start the server
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
