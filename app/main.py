@@ -9,6 +9,8 @@ import os
 import sys
 import gradio as gr
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 # Support both local dev and Docker (PYTHONPATH=/app/src)
@@ -22,6 +24,14 @@ app = FastAPI(
     description="XGBoost churn prediction API. UI available at /ui",
     version="1.0.0",
 )
+
+# ── Serve static files (favicon) ──────────────────────────────────────────────
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    return FileResponse(os.path.join(STATIC_DIR, "favicon.ico"))
 
 
 # ── Pydantic schema ───────────────────────────────────────────────────────────
