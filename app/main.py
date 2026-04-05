@@ -48,6 +48,11 @@ class CustomerData(BaseModel):
 
 
 # ── API endpoints ─────────────────────────────────────────────────────────────
+@app.get("/")
+def root():
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/ui")
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
